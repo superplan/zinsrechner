@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>828</width>
+    <height>694</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="3" column="0" colspan="2">
+     <widget class="QGroupBox" name="groupBox_4">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>200</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Status</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QTextBrowser" name="textBrowserStatus"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="4" rowspan="4">
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="title">
+       <string>Ergebnis</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QTableView" name="tableViewZRechner"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <layout class="QGridLayout" name="gridLayout"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="title">
+       <string>Anforderungen</string>
+      </property>
+      <layout class="QFormLayout" name="formLayout_3">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Eink. N</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="labelNetto">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(0, 85, 255);
+font: 75 12pt &quot;Courier New&quot;;</string>
+         </property>
+         <property name="text">
+          <string>Zahl</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Eink. B</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="labelBrutto">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(0, 85, 255);
+font: 75 12pt &quot;Courier New&quot;;</string>
+         </property>
+         <property name="text">
+          <string>Zahl</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>St.Satz</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="lineEditSteuer"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QGroupBox" name="groupBox_5">
+      <property name="title">
+       <string>Ergebnis</string>
+      </property>
+      <layout class="QFormLayout" name="formLayout_2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Restsch.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="labelRestschuld">
+         <property name="styleSheet">
+          <string notr="true">font: 75 12pt &quot;Courier New&quot;;
+color: rgb(255, 85, 0);</string>
+         </property>
+         <property name="text">
+          <string>Zahl</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>ZKosten</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="labelZKosten">
+         <property name="styleSheet">
+          <string notr="true">font: 75 12pt &quot;Courier New&quot;;
+color: rgb(255, 85, 0);</string>
+         </property>
+         <property name="text">
+          <string>Zahl</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>ZKostenTot</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="labelZKostenTotal">
+         <property name="styleSheet">
+          <string notr="true">font: 75 12pt &quot;Courier New&quot;;
+color: rgb(255, 85, 0);</string>
+         </property>
+         <property name="text">
+          <string>Zahl</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Dauer</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="labelDauer">
+         <property name="styleSheet">
+          <string notr="true">font: 75 12pt &quot;Courier New&quot;;
+color: rgb(255, 85, 0);</string>
+         </property>
+         <property name="text">
+          <string>Text</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="2">
+     <widget class="QCommandLinkButton" name="commandLinkButtonBerechnen">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>45</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Berechnen</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Anforderungen</string>
+      </property>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelTotal">
+         <property name="text">
+          <string>Total</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineEditTotal"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Rat</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineEditRate"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Beg.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDateEdit" name="dateEditBeginn">
+         <property name="dateTime">
+          <datetime>
+           <hour>0</hour>
+           <minute>0</minute>
+           <second>0</second>
+           <year>2018</year>
+           <month>1</month>
+           <day>1</day>
+          </datetime>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QGroupBox" name="groupBox_6">
+      <property name="title">
+       <string>Konditionen</string>
+      </property>
+      <layout class="QFormLayout" name="formLayout_4">
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelJZ">
+         <property name="text">
+          <string>eff. JZ</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineEditJZ"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="labelSZB">
+         <property name="text">
+          <string>SZB</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineEditSZB"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>828</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
