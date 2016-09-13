@@ -1,4 +1,5 @@
 from datetime import date
+from dateutil.relativedelta import relativedelta
 
 class util:
     
@@ -36,7 +37,6 @@ class util:
     # Datumsformatierung: von "tt.mm.jjj" nach datetime.date
     def dat_konv(dat):
         (tmpTag, tmpMonat, tmpJahr) = dat.split(".")
-        print(date(int(tmpJahr), int(tmpMonat), int(tmpTag)))
         return date(int(tmpJahr), int(tmpMonat), int(tmpTag))
         
     def dat_konv_back(dat):
