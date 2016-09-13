@@ -6,8 +6,8 @@ This class manages the access to the foreign db2 database DTLG or DDLG
 '''
 from module.datasource.database_sql import DatabaseSQL
 from module.datasource.sql_stmt_info import SQLStmtInfo
-from zrechner.model.tables.table_zdata import ZDATA
-from zrechner.model import config_manager
+from zinsrechner.model.tables.zinsdaten import ZDATA
+from zinsrechner.model import config_manager
 from os import path as ospath
 
 import copy
@@ -143,6 +143,30 @@ class DBManager():
 #        else:
 #            return None
             
+    def insert_row(self, vals):
+        if self.database.connect():
+            
+            # Tabelle anlegen
+            self.database.execute('CREATE TABLE IF NOT EXISTS ' 
+                                  + ZDATA.NAME + ' ("' \
+                                  + ZDATA.COLUMN.DATUM.value + '" DATE, "' \
+                                  + ZDATA.COLUMN.RESTSCHULD.value + '" TEXT, "' \
+                                  + ZDATA.COLUMN.ZKOSTEN.value + '" TEXT, PRIMARY KEY("' \
+                                  + ZDATA.COLUMN.DATUM.value +'") )')
+            
+            # DatenTranferObjekt anreichern
+            stmt = SQLStmtInfo(SQLStmtInfo.TYPE.INSERT_UPDATE)
+            stmt.set_table(ZDATA.NAME)
+            stmt.set_insert_columns(ZDATA.COLUMNS)
+            stmt.set_insert_values(vals)
+            
+            # Tabelle befüllen
+            (error, data) = self.database.insert_update_with_info(stmt)
+            if error:
+                print(str(error))
+            else:
+                self.database.commit()
+                                     
     def mytest(self, tableName):
         if self.database.connect():
             # Tabellendefinitionen
