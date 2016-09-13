@@ -1,6 +1,21 @@
 from datetime import date
 
 class util:
+    
+    def str_to_int(val):
+        try:
+            return int(val)                
+        except:
+            print("Could not convert " + str(val) + " from int to string")
+            return 0
+            
+    def str_to_float(val):
+        try:
+            return float(val)                
+        except:
+            print("Could not convert " + str(val) + " from float to string")
+            return 0
+                
     def view_2d_list(li):
         for elem in li:
             out = ""
@@ -21,6 +36,7 @@ class util:
     # Datumsformatierung: von "tt.mm.jjj" nach datetime.date
     def dat_konv(dat):
         (tmpTag, tmpMonat, tmpJahr) = dat.split(".")
+        print(date(int(tmpJahr), int(tmpMonat), int(tmpTag)))
         return date(int(tmpJahr), int(tmpMonat), int(tmpTag))
         
     def dat_konv_back(dat):
