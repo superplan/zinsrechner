@@ -8,9 +8,8 @@ It delegates the functionality from the model to the display/view.
 import sys
 from PyQt4 import QtGui
 from zinsrechner.view.main import Main
-from zinsrechner.model.tables.table_zdata import ZDATA
+from zinsrechner.model.tables.zinsdaten import ZDATA
 from zinsrechner.model.db_manager import DBManager
-from zinsrechner.controller.rechenkern import Rechenkern
 from util.util import util as ut
 from module.datasource.sql_stmt_info import SQLStmtInfo
 #from module.datasource.sql_builder import Statement
@@ -29,8 +28,9 @@ class MainController():
         self.view.app = self.app
   
         # register events
-        self.register_events()
         self.init_elements()
+        self.register_events()
+        self.compute()
         
         
     # handle all events that have to be forwarded to the model
@@ -57,6 +57,8 @@ class MainController():
         self.view.labelNetto.setText("")
         self.view.labelBrutto.setText("")
         self.view.lineEditSteuer.setText("40")
+        self.view.lineEditTotal.setText("30000")
+        self.view.lineEditRate.setText("100")
         self.view.lineEditJZ.setText("1.39")
         self.view.lineEditSZB.setText("10")
         self.view.dateEditBeginn.setDate(ut.dat_konv("01.01.2018"))
@@ -71,16 +73,19 @@ class MainController():
 
     def compute(self):  
 
-        rechenkern = Rechenkern(self.read_elements())
-        rechenkern.print_para()
-        if rechenkern.status_ok():
+        zinsdat = ZDATA(self.read_elements())
+        zinsdat.print_para()
+        if zinsdat.status_ok():
             # Nun kann gerechnet werden
             print("OK!!")
-        
+            
             self.view.textBrowserStatus.setText("Starte Berechnung")
             db_manager = DBManager()
-            db_manager.mytest("TABLE01")        
-            self.view.set_table(db_manager.mytest_select("TABLE01"))
+                        
+            bla = zinsdat.forward_projection(10)
+            for elem in bla:
+                db_manager.insert_row(elem)   
+            self.view.set_table(db_manager.mytest_select(ZDATA.NAME))
         
 
 
