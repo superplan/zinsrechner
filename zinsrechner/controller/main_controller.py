@@ -7,10 +7,11 @@ It delegates the functionality from the model to the display/view.
 '''
 import sys
 from PyQt4 import QtGui
-from zrechner.view.main import Main
-from zrechner.model.tables.table_zdata import ZDATA
-from zrechner.model.db_manager import DBManager
-from zrechner.controller.rechenkern import Rechenkern
+from zinsrechner.view.main import Main
+from zinsrechner.model.tables.table_zdata import ZDATA
+from zinsrechner.model.db_manager import DBManager
+from zinsrechner.controller.rechenkern import Rechenkern
+from util.util import util as ut
 from module.datasource.sql_stmt_info import SQLStmtInfo
 #from module.datasource.sql_builder import Statement
 
@@ -58,25 +59,28 @@ class MainController():
         self.view.lineEditSteuer.setText("40")
         self.view.lineEditJZ.setText("1.39")
         self.view.lineEditSZB.setText("10")
+        self.view.dateEditBeginn.setDate(ut.dat_konv("01.01.2018"))
         
     def read_elements(self):
-        return (self.view.lineEditTotal.text(), \
-                self.view.lineEditRate.text(),  \
-                self.view.lineEditJZ.text(),    \
-                self.view.lineEditSZB.text(),   \
-                self.view.dateEditBeginn.text())
+        
+        return ({"FinSumme": self.view.lineEditTotal.text(), \
+                 "Rate":     self.view.lineEditRate.text(),  \
+                 "EffJZ":    self.view.lineEditJZ.text(),    \
+                 "SollZB":   self.view.lineEditSZB.text(),   \
+                 "Beginn":   self.view.dateEditBeginn.text()})
 
     def compute(self):  
 
         rechenkern = Rechenkern(self.read_elements())
         rechenkern.print_para()
         if rechenkern.status_ok():
+            # Nun kann gerechnet werden
             print("OK!!")
         
-#        self.view.textBrowserStatus.setText("compute")
-#        db_manager = DBManager()
-#        db_manager.mytest("TABLE01")        
-#        self.view.set_table(db_manager.mytest_select("TABLE01"))
+            self.view.textBrowserStatus.setText("Starte Berechnung")
+            db_manager = DBManager()
+            db_manager.mytest("TABLE01")        
+            self.view.set_table(db_manager.mytest_select("TABLE01"))
         
 
 

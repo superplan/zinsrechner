@@ -4,46 +4,37 @@ from util.util import util as ut
 
 class Rechenkern():
     
-    def __init__(self, paramList = ""):
+    def __init__(self, dictionary):
         
         self.finSumme   = 0
         self.rate       = 0
         self.effJZ      = 0
         self.sollZB     = 0
         self.beginn     = 0
-        if len(paramList) == 5:
-            self.set_fin_summe (paramList[0])
-            self.set_rate      (paramList[1])
-            self.set_effJZ     (paramList[2])
-            self.set_soll_ZB   (paramList[3])
-            self.set_beginn    (paramList[4])
+        
+        for name, val in dictionary.items():
+            if name == "FinSumme" and len(str(val)) > 0:
+                setattr(self, 'finSumme', ut.str_to_int(val))
+            if name == "Rate"     and len(str(val)) > 0:
+                setattr(self, 'rate',     ut.str_to_int(val))
+            if name == "EffJZ"    and len(str(val)) > 0:
+                setattr(self, 'effJZ',    ut.str_to_float(val))
+            if name == "SollZB"   and len(str(val)) > 0:
+                setattr(self, 'sollZB',   ut.str_to_int(val))
+            if name == "Beginn"   and len(str(val)) > 0:
+                setattr(self, 'beginn',   ut.dat_konv(val))
 
-    def set_fin_summe(self, val):
-        if len(str(val)) > 0:
-            self.finSumme = int(val)
 
-    def set_rate(self, val):
-        if len(str(val)) > 0:
-            self.rate = int(val)
-            
-    def set_effJZ(self, val):
-        if len(str(val)) > 0:
-            self.rate = float(val)
-            
-    def set_soll_ZB(self, val):
-        if len(str(val)) > 0:
-            self.rate = int(val) 
-            
     def set_beginn(self, val):
         if len(str(val)) > 0:
             self.rate = ut.dat_konv(val)
             
     def print_para(self):
-        out = [["param","wert"],\
-               ["-----","----------"],\
-               ["total", self.finSumme],\
-               ["rat", self.rate],\
-               ["effJZ", self.effJZ],\
+        out = [["param" , "wert"],\
+               ["------", "----------"],\
+               ["total" , self.finSumme],\
+               ["rat"   , self.rate],\
+               ["effJZ" , self.effJZ],\
                ["sollZB", self.sollZB],\
                ["beginn", self.beginn],\
                ["----------------------",""]]
