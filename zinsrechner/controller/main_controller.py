@@ -30,6 +30,7 @@ class MainController():
         # register events
         self.init_elements()
         self.register_events()
+        self.update_salary_infos()
         self.compute()
         
         
@@ -48,6 +49,12 @@ class MainController():
         self.view.lineEditSZB.textChanged.connect(self.compute)
         self.view.dateEditBeginn.dateChanged.connect(self.compute)
         
+        
+        self.view.lineEditRate.returnPressed.connect(self.update_salary_infos)
+        self.view.lineEditSteuer.returnPressed.connect(self.update_salary_infos)
+        self.view.lineEditRate.textChanged.connect(self.update_salary_infos)
+        self.view.lineEditSteuer.textChanged.connect(self.update_salary_infos)
+        
     def init_elements(self):
         self.view.textBrowserStatus.setText("ZRechner ist gestartet.")
         self.view.labelRestschuld.setText("")
@@ -57,7 +64,7 @@ class MainController():
         self.view.labelNetto.setText("")
         self.view.labelBrutto.setText("")
         self.view.lineEditSteuer.setText("40")
-        self.view.lineEditTotal.setText("30000")
+        self.view.lineEditTotal.setText("300")
         self.view.lineEditRate.setText("100")
         self.view.lineEditJZ.setText("1.39")
         self.view.lineEditSZB.setText("10")
@@ -70,21 +77,47 @@ class MainController():
                  "EffJZ":    self.view.lineEditJZ.text(),    \
                  "SollZB":   self.view.lineEditSZB.text(),   \
                  "Beginn":   self.view.dateEditBeginn.text()})
+        
+    def update_elements(self, werte):
+#        werte = (restSchuld, kostenSZB, kostenTotal, dauerTotal)
+        self.view.labelRestschuld.setText  ("%.2f" % werte[0])
+        self.view.labelZKosten.setText     ("%.2f" % werte[1])
+        self.view.labelZKostenTotal.setText("%.2f" % werte[2])
+        
+        dauerTotalMonate = werte[3]
+        dauerJahre       = int(dauerTotalMonate / 12)
+        dauerMonate      = dauerTotalMonate - dauerJahre * 12
+        self.view.labelDauer.setText(str(dauerJahre) + " Jahre, " + str(dauerMonate) + " Monate")
+        
+
+    def update_salary_infos(self):
+        tmpRate   = float(self.view.lineEditRate.text())
+        tmpNetto  = tmpRate / 40 * 100
+        tmpBrutto = tmpNetto / (1 - float(self.view.lineEditSteuer.text()) / 100)
+        self.view.labelNetto.setText ("%.2f" % tmpNetto)
+        self.view.labelBrutto.setText("%.2f" % tmpBrutto)  
 
     def compute(self):  
 
         zinsdat = ZDATA(self.read_elements())
-        zinsdat.print_para()
         if zinsdat.status_ok():
-            # Nun kann gerechnet werden
-            print("OK!!")
             
+            # Nun kann gerechnet werden            
             self.view.textBrowserStatus.setText("Starte Berechnung")
             db_manager = DBManager()
+            db_manager.create_static_table()
                         
-            bla = zinsdat.forward_projection(10)
-            for elem in bla:
-                db_manager.insert_row(elem)   
+            results = zinsdat.forward_projection()
+            if results:
+                if len(results) > 0:
+                    db_manager.insert_rows(results)
+                    (error, kostenAlle) = db_manager.get_cost()
+                    
+                    if not error:
+                        kostenEnde = zinsdat.eval_cost(kostenAlle)
+                        self.update_elements(kostenEnde)
+            else:
+                self.view.textBrowserStatus.setText("Ergebnis konnte nicht berechnet werden")
             self.view.set_table(db_manager.mytest_select(ZDATA.NAME))
         
 
