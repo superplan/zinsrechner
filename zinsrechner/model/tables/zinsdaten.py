@@ -23,12 +23,13 @@ class ZDATA():
         ZKOSTEN='ZKOSTEN'
         
         
-    DATECOLUMNS = ['GUEAB', 'GUEBIS']
-    
-        
     COLUMNS = [
         'DATUM', 'RESTSCHULD', 'ZKOSTEN'
     ]
+    
+        
+    COLUMNS_AND_TYPES = "'DATUM' DATE, 'RESTSCHULD' REAL, 'ZKOSTEN' REAL"
+
 
     
     def __init__(self, dictionary):
@@ -74,10 +75,43 @@ class ZDATA():
         except:
             return False
     
-    def forward_projection(self, steps):
+    def forward_projection(self):
         
         out = []
-        for step in range(0, steps):
-            tmpDate    = ut.add_month(self.beginn, step)
-            out += [(tmpDate, 0, self.rate)]
+        rest   = self.finSumme
+        kosten = 0
+        maxDauer = 12*50 + 1
+        
+        if self.finSumme * (self.effJZ/12) / 100 > self.rate:
+            print("Rate ist zu klein")
+            return
+        
+        for step in range(0, maxDauer):
+            tmpDate  = ut.add_month(self.beginn, step)
+            out     += [(tmpDate, "%.2f" % rest, "%.2f" % kosten)]
+#############################################
+#           Hier ist des Pudels Kern
+#############################################
+            kostenMonat = rest * (self.effJZ/12) / 100
+            kosten += kostenMonat
+            rest   += kostenMonat - self.rate
+            if rest < 0:
+                return out
+#############################################
+#############################################
         return out
+    
+    def eval_cost(self, val):
+        dauerSZB   = 12 * self.sollZB
+        dauerTotal = len(val)
+        
+        restSchuld  = val[-1][0]
+        kostenSZB   = 0
+        kostenTotal = val[-1][1]
+        
+        if dauerTotal >= dauerSZB:
+            kostenSZB = val[dauerSZB][1]
+        else:
+            kostenSZB = kostenTotal
+
+        return (restSchuld, kostenSZB, kostenTotal, dauerTotal)
