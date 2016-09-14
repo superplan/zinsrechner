@@ -30,29 +30,9 @@ class DBManager():
                 self.init_out = (False, None)
                 return 
         self.errors = True
-        self.init_out = (error, None)
-        
-#        self.db = DatabaseSQL('db')
-#        print(self.db.init())
+        self.init_out = (error, None)        
       
     def init_tables(self):
-        (error, data) = (False, None)
-        # 2. check if the db is initialized
-        if not self.is_database_ready():
-            if not self.is_test_database_ready():
-                (error, data) = self.create_test_db()
-                if error:
-                    self.errors = True
-                    return (error, data)
-                
-            if not self.are_static_tables_ready():
-                (error, data) = self.create_static_tables()
-                if error:
-                    self.errors = True
-                    return (error, data)
-                else:
-                    config_manager.init_db()
-                    
         (error, data) = self.database.connect() 
         if not error:
             # init other database functions if database is built
@@ -79,52 +59,13 @@ class DBManager():
     def close(self):
         self.database.close()
 
-#    def create_static_tables(self):
-#        successful = True
-#        if not self.database.table_exists(Config.NAME):
-#            if not self.database.create_table(Config.NAME,','.join(Config.get_table_schema())):
-#                successful = False
-#        if not self.database.table_exists(UserConfig.NAME):
-#            if not self.database.create_table(UserConfig.NAME,','.join(UserConfig.get_table_schema())):
-#                successful = False
-  
-                
-        # save changes and close the connection
-#        self.database.commit() 
-#        return successful
+    def create_static_table(self):
+ 
+        self.database.create_table(ZDATA.NAME, ZDATA.COLUMNS_AND_TYPES)
+        
+#       save changes and close the connection
+        self.database.commit()
             
-    # updates the db        
-    def update_table(self, table):
-        # create excel object from the given xml file
-        excel = ExcelFile(os.path.join(config_manager.get('APP', 'path'), config_manager.get('XLS', table)))
-        
-        # get lines from the excel sheet
-        (columns, rows) = excel.get_table_data(self.EXCEL_SHEET_NR)
-        
-        # add '' to the name to prevent sql issues wit sqlite
-        columns = ["'"+column+"'" for column in columns]
-        
-        columns_and_types = []
-        
-        for i in range(0, len(columns)):
-            columns_and_types.append(columns[i]+' VARCHAR')
-           
-        # if there is data to update, delete the table and create it again
-        if len(rows) > 0:
-            # all data loaded successfully? drop and create the table!
-            (error, data) = self.database.create_table(table, ','.join(columns_and_types))
-            if error:
-                return (error, data)
-        # if there is no data (due to an error) use the existing db, it's still an error
-        else:
-            logger.get_logger(__name__).error('Die Excel-Datei für die Tabelle {} enthält keine Daten!'.format(table))
-        
-        # insert values into the database        
-        (error, data) = self.database.list_insert_into(table, columns, rows)
-        
-        return (error, None)
-        
-
     
     # Retrieve a table with it's columns
     def get_table(self, table):
@@ -143,30 +84,47 @@ class DBManager():
 #        else:
 #            return None
             
-    def insert_row(self, vals):
+    def insert_rows(self, vals):
         if self.database.connect():
             
             # Tabelle anlegen
-            self.database.execute('CREATE TABLE IF NOT EXISTS ' 
-                                  + ZDATA.NAME + ' ("' \
-                                  + ZDATA.COLUMN.DATUM.value + '" DATE, "' \
-                                  + ZDATA.COLUMN.RESTSCHULD.value + '" TEXT, "' \
-                                  + ZDATA.COLUMN.ZKOSTEN.value + '" TEXT, PRIMARY KEY("' \
-                                  + ZDATA.COLUMN.DATUM.value +'") )')
+#            print(self.database.execute('CREATE TABLE IF NOT EXISTS ' 
+#                                  + ZDATA.NAME + ' ("' \
+#                                  + ZDATA.COLUMN.DATUM.value + '" DATE, "' \
+#                                  + ZDATA.COLUMN.RESTSCHULD.value + '" TEXT, "' \
+#                                  + ZDATA.COLUMN.ZKOSTEN.value + '" TEXT, PRIMARY KEY("' \
+#                                  + ZDATA.COLUMN.DATUM.value +'") )'))
             
-            # DatenTranferObjekt anreichern
-            stmt = SQLStmtInfo(SQLStmtInfo.TYPE.INSERT_UPDATE)
-            stmt.set_table(ZDATA.NAME)
-            stmt.set_insert_columns(ZDATA.COLUMNS)
-            stmt.set_insert_values(vals)
-            
-            # Tabelle befüllen
-            (error, data) = self.database.insert_update_with_info(stmt)
+#            # DatenTranferObjekt anreichern
+#            stmt = SQLStmtInfo(SQLStmtInfo.TYPE.INSERT_UPDATE)
+#            stmt.set_table(ZDATA.NAME)
+#            stmt.set_insert_columns(ZDATA.COLUMNS)
+#            for el in vals:
+#                stmt.set_insert_values(el)
+#            
+#            # Tabelle befüllen
+#            (error, data) = self.database.insert_update_with_info(stmt)
+
+
+            (error, data) = self.database.list_insert_into(ZDATA.NAME, ZDATA.COLUMNS, vals)
             if error:
+                print("bin hier")
                 print(str(error))
             else:
                 self.database.commit()
-                                     
+                
+    def get_cost(self):
+        stmt = SQLStmtInfo()
+        stmt.set_table(ZDATA.NAME)
+        stmt.set_columns_select([ZDATA.COLUMN.RESTSCHULD, ZDATA.COLUMN.ZKOSTEN])
+        (error, data) = self.database.select_with_info(stmt)
+        
+        if data:
+            return (error, data)
+        else:           
+            print("Tabelle ist leer")
+            return (error, None)  
+            
     def mytest(self, tableName):
         if self.database.connect():
             # Tabellendefinitionen

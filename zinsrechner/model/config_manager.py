@@ -37,7 +37,7 @@ def init(path):
     if not key_exists('DATA', 'path'):
         # if the file is not valid create a new one
         __config_parser.add_section('DATA')
-        __config_parser.set('DATA', 'path', r'data\zrechner.db')
+        __config_parser.set('DATA', 'path', r'data\zinsdaten.db')
         __config_parser.set('DATA', 'report_path', r'data\report')
         __config_parser.add_section('LOG')
         __config_parser.set('LOG', 'file', r'log\zrechner.log')
