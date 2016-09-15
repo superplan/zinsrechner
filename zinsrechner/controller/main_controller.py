@@ -11,7 +11,7 @@ from zinsrechner.view.main import Main
 from zinsrechner.model.tables.zinsdaten import ZDATA
 from zinsrechner.model.db_manager import DBManager
 from util.util import util as ut
-from module.datasource.sql_stmt_info import SQLStmtInfo
+from datasource.sql_stmt_info import SQLStmtInfo
 #from module.datasource.sql_builder import Statement
 
 class MainController():
@@ -119,8 +119,6 @@ class MainController():
             else:
                 self.view.textBrowserStatus.setText("Ergebnis konnte nicht berechnet werden")
             self.view.set_table(db_manager.mytest_select(ZDATA.NAME))
-        
-
 
         # Hinzufügen von WHERE-Bedingungen
 #        stmt.add_where_condition('ORDN_BEGR', Statement._condition_equality.value, '068371146')
