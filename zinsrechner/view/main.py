@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 '''
-Creation of the main window from the desigenr XML. 
+Creation of the main window from the desigenr XML.
 NC user have to use the command within the python folder!
 NOT NEEDED IF uic.loadUiType USED
 pyuic4 main.ui > main.py
@@ -21,16 +21,16 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(resource.get(r'main.ui'))
 
 # main window class
 class Main(PyQt4.QtGui.QMainWindow, Ui_MainWindow):
-    
-    
+
+
     def __init__(self):
         PyQt4.QtGui.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
-        
+
         self.tableViewZRechner.horizontalHeader().setStretchLastSection(True)
-        self.tableViewZRechner.verticalHeader().setResizeMode(QtGui.QHeaderView.Interactive)
-    
+        self.tableViewZRechner.verticalHeader().setResizeMode(QtGui.QHeaderView.ResizeToContents)
+
     def set_table(self, result):
         (error, columns, data) = result
         if error:
@@ -40,6 +40,9 @@ class Main(PyQt4.QtGui.QMainWindow, Ui_MainWindow):
             self.tableViewZRechner.clearSpans()
             table_model = TableModel(self, data, columns)
             self.tableViewZRechner.setModel(table_model)
+
             self.tableViewZRechner.resizeRowsToContents()
-#            indx = PyQt4.QtCore.QModelIndex()
-#            self.show()
+#            self.tableViewZRechner.resizeColumnsToContents()
+            self.tableViewZRechner.setColumnWidth(0,80)
+            self.tableViewZRechner.setColumnWidth(1,80)
+            self.tableViewZRechner.setColumnWidth(2,80)
