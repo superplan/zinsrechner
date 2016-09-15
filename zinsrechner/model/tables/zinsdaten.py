@@ -105,13 +105,15 @@ class ZDATA():
         dauerSZB   = 12 * self.sollZB
         dauerTotal = len(val)
         
-        restSchuld  = val[-1][0]
+        restSchuld  = 0
         kostenSZB   = 0
         kostenTotal = val[-1][1]
         
         if dauerTotal >= dauerSZB:
-            kostenSZB = val[dauerSZB][1]
+            kostenSZB  = val[dauerSZB][1]
+            restSchuld = val[dauerSZB][0]
         else:
-            kostenSZB = kostenTotal
+            kostenSZB  = kostenTotal
+            restSchuld = 0
 
         return (restSchuld, kostenSZB, kostenTotal, dauerTotal)
