@@ -8,27 +8,27 @@ und die Hauptanwendung gestartet.
 '''
 import sys
 import os
-from zrechner.controller.main_controller import MainController
-from zrechner.model import config_manager
-
+from zinsrechner.controller.main_controller import MainController
+from zinsrechner.model import config_manager
 
 # version info
 __version__ = '0.0.0'
 
-def main():  
+
+def main():
     """Initialisierung der Anwendung"""
-    
+
     # Hole und speichere den Pfad zur Anwendung
     path = set_app_path()
-    
+
     # load the config file
     config_manager.init(path)
-    
+
     # Initialisiere den Controller des Hauptfensters
-    controller = MainController() 
-    
+    controller = MainController()
+
     # Zeige die Benutzerschnittstelle
-    controller.run() 
+    controller.run()
 
 def set_app_path():
     """Ermittle den Pfad der Anwendung
@@ -41,7 +41,6 @@ def set_app_path():
         application_path = os.path.dirname(__file__)
     return application_path
 
-        
+
 if __name__ == '__main__':
     main()
-    
