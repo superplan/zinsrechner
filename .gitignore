@@ -1,0 +1,5 @@
+data/*
+res/*
+config.cfg
+__pycache__
+.spyderproject
