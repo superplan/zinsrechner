@@ -9,11 +9,12 @@ pyuic4 main.ui > main.py
 '''
 import PyQt4
 from PyQt4 import uic, QtGui
-from zrechner.view.table_model import TableModel
+from zinsrechner.view.table_model import TableModel
+import datetime
 
 #from sys import path
 #path.append("W:\Org_AEPB1D\AEPB1D_Mitarbeiter\Mitarbeiter\Kamfor\WinPython-64bit-3.4.4.2\notebooks\StandardModule\module")
-from module.config import resource
+from config import resource
 
 # loading of the UI file
 Ui_MainWindow, QtBaseClass = uic.loadUiType(resource.get(r'main.ui'))
@@ -35,8 +36,10 @@ class Main(PyQt4.QtGui.QMainWindow, Ui_MainWindow):
         if error:
             self.textBrowserStatus.setText(str(error))
         if data:
-            self.textBrowserStatus.setText("SQL-Abfrage erfolgreich abgeschickt.")
+            self.textBrowserStatus.setText("SQL-Abfrage erfolgreich abgeschickt." + str(datetime.datetime.now()))
             self.tableViewZRechner.clearSpans()
             table_model = TableModel(self, data, columns)
             self.tableViewZRechner.setModel(table_model)
             self.tableViewZRechner.resizeRowsToContents()
+#            indx = PyQt4.QtCore.QModelIndex()
+#            self.show()
