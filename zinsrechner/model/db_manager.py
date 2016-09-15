@@ -4,8 +4,8 @@ This class manages the access to the foreign db2 database DTLG or DDLG
 
 @author: Moritz Kurt Heilemann
 '''
-from module.datasource.database_sql import DatabaseSQL
-from module.datasource.sql_stmt_info import SQLStmtInfo
+from datasource.database_sql import DatabaseSQL
+from datasource.sql_stmt_info import SQLStmtInfo
 from zinsrechner.model.tables.zinsdaten import ZDATA
 from zinsrechner.model import config_manager
 from os import path as ospath
