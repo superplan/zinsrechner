@@ -44,6 +44,7 @@ class ZDATA():
         self.finSumme   = 0
         self.rate       = 0
         self.effJZ      = 0
+        self.effJZZ     = 0
         self.sollZB     = 0
         self.beginn     = 0
 
@@ -54,6 +55,8 @@ class ZDATA():
                 setattr(self, 'rate',     ut.str_to_int(val))
             if name == "EffJZ"    and len(str(val)) > 0:
                 setattr(self, 'effJZ',    ut.str_to_float(val))
+            if name == "EffJZZ"   and len(str(val)) > 0:
+                setattr(self, 'effJZZ',   ut.str_to_float(val))
             if name == "SollZB"   and len(str(val)) > 0:
                 setattr(self, 'sollZB',   ut.str_to_int(val))
             if name == "Beginn"   and len(str(val)) > 0:
@@ -65,6 +68,7 @@ class ZDATA():
                ["total" , self.finSumme],\
                ["rat"   , self.rate],\
                ["effJZ" , self.effJZ],\
+               ["effJZZ" , self.effJZZ],\
                ["sollZB", self.sollZB],\
                ["beginn", self.beginn],\
                ["----------------------",""]]
@@ -75,6 +79,7 @@ class ZDATA():
             if self.finSumme  > 0 \
               and self.rate   > 0 \
               and self.effJZ  > 0 \
+              and self.effJZZ > 0 \
               and self.sollZB > 0:
                   return True
             else:
@@ -84,10 +89,11 @@ class ZDATA():
 
     def forward_projection(self):
 
-        out = []
-        rest   = self.finSumme
-        kosten = 0.0
-        maxDauer = 12*50 + 1
+        out      = []
+        rest     = self.finSumme
+        kosten   = 0.0
+        maxDauer = 12*70 + 1
+        tmpZins  = self.effJZ
 
         if self.finSumme * (self.effJZ/12) / 100 > self.rate:
             print("Rate ist zu klein")
@@ -96,10 +102,15 @@ class ZDATA():
         for step in range(0, maxDauer):
             tmpDate  = ut.add_month(self.beginn, step)
             out     += [(tmpDate, rest, kosten)]
+
+            # Zinanpassung nach Sollzinsbindungsdauer
+            # -2, weil step bei Null anfängt und weil hier für den Folgemonat gerechnet wird
+            if step > 12 * self.sollZB - 2:
+                tmpZins = self.effJZZ
 #############################################
 #           Hier ist des Pudels Kern
 #############################################
-            kostenMonat = rest * (self.effJZ/12) / 100
+            kostenMonat = rest * (tmpZins/12) / 100
             kosten += kostenMonat
             rest   += kostenMonat - self.rate
             if rest < 0:
