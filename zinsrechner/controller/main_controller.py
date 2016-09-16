@@ -42,6 +42,7 @@ class MainController():
         self.view.commandLinkButtonBerechnen.clicked.connect(self.compute)
         self.view.lineEditTotal.returnPressed.connect(self.compute)
         self.view.lineEditJZ.returnPressed.connect(self.compute)
+        self.view.lineEditJZZ.returnPressed.connect(self.compute)
         self.view.lineEditSZB.returnPressed.connect(self.compute)
         self.view.lineEditRate.returnPressed.connect(self.compute)
 
@@ -49,9 +50,9 @@ class MainController():
         self.view.lineEditTotal.textChanged.connect(self.compute)
         self.view.lineEditRate.textChanged.connect(self.compute)
         self.view.lineEditJZ.textChanged.connect(self.compute)
+        self.view.lineEditJZZ.textChanged.connect(self.compute)
         self.view.lineEditSZB.textChanged.connect(self.compute)
         self.view.dateEditBeginn.dateChanged.connect(self.compute)
-
 
         self.view.lineEditRate.returnPressed.connect(self.update_salary_infos)
         self.view.lineEditSteuer.returnPressed.connect(self.update_salary_infos)
@@ -70,6 +71,7 @@ class MainController():
         self.view.lineEditTotal.setText("300")
         self.view.lineEditRate.setText("100")
         self.view.lineEditJZ.setText("1.39")
+        self.view.lineEditJZZ.setText("1.39")
         self.view.lineEditSZB.setText("10")
         self.view.dateEditBeginn.setDate(ut.dat_konv("01.01.2018"))
 
@@ -78,6 +80,7 @@ class MainController():
         return ({"FinSumme": self.view.lineEditTotal.text(), \
                  "Rate":     self.view.lineEditRate.text(),  \
                  "EffJZ":    self.view.lineEditJZ.text(),    \
+                 "EffJZZ":   self.view.lineEditJZZ.text(),    \
                  "SollZB":   self.view.lineEditSZB.text(),   \
                  "Beginn":   self.view.dateEditBeginn.text()})
 
